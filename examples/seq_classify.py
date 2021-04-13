@@ -14,11 +14,12 @@ def get_chnsenticorp_data(mode="train"):
 train_texts, train_labels = get_chnsenticorp_data()
 dev_texts, dev_labels = get_chnsenticorp_data("dev")
 
-dataset = AutoDataset(train_texts=train_texts,
-                      train_labels=train_labels,
-                      eval_texts=dev_texts,
-                      eval_labels=dev_texts)
+dataset = make_dataset(train_texts=train_texts,
+                       train_labels=train_labels,
+                       eval_texts=dev_texts,
+                       eval_labels=dev_labels)
 
+# 此处默认使用SEQDevice.CPU（CPU模式），切换GPU需要安装PaddlePaddle-GPU版本且需要更换为SEQDevice.GPU
 model = AutoModel(dataset, network=SEQNetwork.LSTM, device=SEQDevice.CPU)
 model.run(batch_size=16, epochs=5)
 out = model.infer("商品的不足暂时还没发现，京东的订单处理速度实在.......周二就打包完成，周五才发货...")

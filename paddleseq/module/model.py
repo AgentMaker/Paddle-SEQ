@@ -1,5 +1,5 @@
 from typing import List
-from copy import deepcopy
+from copy import deepcopy, copy
 
 import paddle
 import paddlenlp.metrics
@@ -23,7 +23,7 @@ class AutoModel(paddle.Model):
 
         self.train_dataset = dataset
         # 此处有更好方案
-        self.eval_dataset = deepcopy(dataset).is_eval()
+        self.eval_dataset = copy(dataset).is_eval()
 
         self.network = network
 

@@ -57,7 +57,8 @@ class BaseDataset(Dataset):
 
 
 class AutoDataset(BaseDataset):
-    def __init__(self, train_texts: list,
+    def __init__(self,
+                 train_texts: list,
                  train_texts_b: list = None,
                  train_labels: list = None,
                  eval_texts: list = None,
@@ -118,3 +119,26 @@ class AutoDataset(BaseDataset):
         #     self.task = SEQTask.MATCH_TASK
         else:
             raise Exception("AutoDataset：暂时无法判断适合哪种深度学习任务" + select_task_mag)
+
+
+def make_dataset(train_texts: list,
+                 train_texts_b: list = None,
+                 train_labels: list = None,
+                 eval_texts: list = None,
+                 eval_texts_b: list = None,
+                 eval_labels: list = None,
+                 task=SEQTask.AUTO):
+    return (AutoDataset(train_texts=train_texts,
+                        train_texts_b=train_texts_b,
+                        train_labels=train_labels,
+                        eval_texts=eval_texts,
+                        eval_texts_b=eval_texts_b,
+                        eval_labels=eval_labels,
+                        task=task),
+            AutoDataset(train_texts=[],
+                        train_texts_b=None,
+                        train_labels=None,
+                        eval_texts=eval_texts,
+                        eval_texts_b=eval_texts_b,
+                        eval_labels=eval_labels,
+                        task=task).is_eval())
