@@ -1,6 +1,15 @@
 from paddleseq import AutoDataset, AutoModel, SEQDevice, SEQNetwork
 from paddlenlp.datasets.chnsenticorp import ChnSentiCorp
 
+import random
+import numpy as np
+import paddle
+
+# 设置随机种子，确保稳定性
+random.seed(88)
+np.random.seed(88)
+paddle.seed(88)
+
 
 def get_chnsenticorp_data(mode="train"):
     texts = list()
@@ -21,6 +30,6 @@ dataset = AutoDataset(train_texts=train_texts,
 
 # 此处默认使用SEQDevice.CPU（CPU模式），切换GPU需要安装PaddlePaddle-GPU版本且需要更换为SEQDevice.GPU
 model = AutoModel(dataset, network=SEQNetwork.LSTM, device=SEQDevice.CPU)
-model.run(batch_size=16, epochs=15)
-out = model.infer("商品的不足暂时还没发现，京东的订单处理速度实在.......周二就打包完成，周五才发货...")
+model.run(batch_size=16, epochs=30, log_freq=100)
+out = model.infer("GT太菜了，水平真不行")
 print(out)

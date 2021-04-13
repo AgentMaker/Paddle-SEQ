@@ -22,14 +22,15 @@ class AutoModel(paddle.Model):
         self.prepare_flag = False
 
         self.train_dataset = dataset
-        # 此处有更好方案
-        self.eval_dataset = deepcopy(dataset)
+        self.eval_dataset = deepcopy(self.train_dataset)
         self.eval_dataset.is_eval()
 
         self.network = network
 
         if task_config == SEQTask.AUTO:
             self.train_dataset.analysis_task()
+            # 此处有更好方案
+            self.eval_dataset.analysis_task()
             self.select_task_config()
         else:
             self.task_config = task_config
