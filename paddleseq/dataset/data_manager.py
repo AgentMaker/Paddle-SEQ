@@ -83,6 +83,8 @@ class AutoDataset(BaseDataset):
 
     def _apply_classes_dataset(self):
         self.label_opt = ClassesLabel(self.labels)
+        self.label_encoder_opt = self.label_opt.encoder
+        self.label_decoder_opt = self.label_opt.decoder
         self.task = SEQTask.CLASSES_TASK
         self.labels = self.label_opt.encoded()
         self.train_labels = self.labels[:len(self.train_labels)]
@@ -92,7 +94,6 @@ class AutoDataset(BaseDataset):
         convert = ClassesConvertRNN()
         self.convert_op = convert.convert_op
         self.max_len = convert.max_len
-        return self._apply_classes_dataset
 
     def analysis_task(self):
         print("AutoDataset：正在从 分类/匹配/相似度/序列标注/文本生成 中搜索数据集适合的深度学习任务类型...")
@@ -107,7 +108,7 @@ class AutoDataset(BaseDataset):
         elif len(self.labels) == len(self.train_texts) == len(self.train_texts_b):
             print("AutoDataset：当前数据集适合文本匹配/相似度任务" + select_task_mag)
             # 也可能适合文本搜索
-            self.task = SEQTask.MATCH_TASK
+            self.task = SEQTask.AUTO
         # elif len(self.texts) == len(self.texts_b) and len(self.labels) == 0:
         #     # 也可能适合机器翻译、阅读理解
         #     print("AutoDataset：当前数据集适合实体标注任务")

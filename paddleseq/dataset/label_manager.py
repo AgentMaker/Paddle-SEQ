@@ -17,8 +17,11 @@ class ClassesLabel:
     def encoded(self):
         return [self.encoder_dict[text] for text in self.label_list]
 
-    def decoded(self):
-        return [self.decoder_dict[text] for text in self.label_list]
+    def encoder(self, text):
+        return self.encoder_dict[text]
+
+    def decoder(self, ids):
+        return self.decoder_dict[ids]
 
     def classes_num(self):
         return len(self.weight)

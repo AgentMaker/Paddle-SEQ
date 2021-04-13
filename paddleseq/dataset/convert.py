@@ -1,6 +1,7 @@
 import os.path
 
 import numpy as np
+import paddle
 
 from paddlenlp.data import Vocab, JiebaTokenizer, Pad
 
@@ -35,7 +36,7 @@ class ClassesConvertRNN(BaseConvert):
     def classes_encoder(self, text, label=None):
         ipt = self.tokenizer.encode(text)
         pad = np.zeros(self.max_len, dtype="int64")
-        pad[:len(ipt)] = np.array(ipt).astype("int64")
+        pad[:min(len(ipt), self.max_len)] = np.array(ipt[:min(len(ipt), self.max_len)]).astype("int64")
         if label is not None:
             lab = np.array(label).astype("int64")
             return pad, lab

@@ -18,6 +18,9 @@ class AutoModel(paddle.Model):
                  network=SEQNetwork.LSTM,
                  task_config=SEQTask.AUTO,
                  device=SEQDevice.AUTO):
+        # Flags
+        self.prepare_flag = False
+
         self.train_dataset = dataset
         # 此处有更好方案
         self.eval_dataset = deepcopy(dataset).is_eval()
@@ -28,7 +31,8 @@ class AutoModel(paddle.Model):
             self.train_dataset.analysis_task()
             self.select_task_config()
         else:
-            self.model_config = task_config
+            self.task_config = task_config
+            # 此处添加xxx_task_config()
 
         self.input_list = self.model_config.input_list
         self.label_list = self.model_config.label_list
@@ -57,15 +61,6 @@ class AutoModel(paddle.Model):
         else:
             self.prepare(*self.prepare_ops)
 
-    def set_loss_opt(self, loss_opt):
-        self.prepare_ops[1] = loss_opt
-
-    def set_optimizer(self, optimizer: paddle.optimizer.Optimizer):
-        self.prepare_ops[0] = optimizer
-
-    def set_metrics(self, metrics: paddle.metric.Metric):
-        self.prepare_ops[2] = metrics
-
     def set_inputs(self, inputs: List[paddle.static.InputSpec]):
         self.input_list = inputs
 
@@ -88,8 +83,9 @@ class AutoModel(paddle.Model):
             shuffle=True,
             num_workers=0,
             callbacks=None):
-
-        self._prepare()
+        if not self.prepare_flag:
+            self._prepare()
+            self.prepare_flag = True
         self.fit(
             train_data=self.train_dataset,
             eval_data=self.eval_dataset,
@@ -104,6 +100,15 @@ class AutoModel(paddle.Model):
             shuffle=shuffle,
             num_workers=num_workers,
             callbacks=callbacks)
+
+    def infer(self, text):
+        if not self.prepare_flag:
+            self._prepare()
+            self.prepare_flag = True
+        text = self.train_dataset.convert_op(text)
+        out = self.predict_batch([[text]])
+        out = self.model_config.get_result(out, self.train_dataset.label_decoder_opt)
+        return out
 
 
 class ModelConfig:
@@ -141,3 +146,11 @@ class ClassesConfig(ModelConfig):
         optimizer = paddle.optimizer.AdamW(0.0001, parameters=self.network.parameters())
         metrics = paddle.metric.Accuracy()
         self.prepare_ops = [optimizer, loss_opt, metrics]
+
+    @staticmethod
+    def get_result(out, decoder):
+        out = paddle.to_tensor(out)
+        prob = paddle.nn.functional.softmax(out).numpy()
+        top_k = paddle.tensor.argsort(out).numpy()
+        return [(decoder(t), p) for p, t in zip(prob[0][0][:min(5, len(prob[0][0]))],
+                                                top_k[0][0][:min(5, len(prob[0][0]))])]
