@@ -23,7 +23,8 @@ class AutoModel(paddle.Model):
 
         self.train_dataset = dataset
         # 此处有更好方案
-        self.eval_dataset = copy(dataset).is_eval()
+        self.eval_dataset = deepcopy(dataset)
+        self.eval_dataset.is_eval()
 
         self.network = network
 

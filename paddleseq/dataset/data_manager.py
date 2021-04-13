@@ -46,7 +46,7 @@ class BaseDataset(Dataset):
             return self.sample(index)
 
     def __len__(self):
-        return len(self.train_texts)
+        return len(self.train_texts) if len(self.train_texts) != 0 is False else len(self.eval_texts)
 
     def is_train(self):
         self.eval_mode = False
@@ -119,26 +119,3 @@ class AutoDataset(BaseDataset):
         #     self.task = SEQTask.MATCH_TASK
         else:
             raise Exception("AutoDataset：暂时无法判断适合哪种深度学习任务" + select_task_mag)
-
-
-def make_dataset(train_texts: list,
-                 train_texts_b: list = None,
-                 train_labels: list = None,
-                 eval_texts: list = None,
-                 eval_texts_b: list = None,
-                 eval_labels: list = None,
-                 task=SEQTask.AUTO):
-    return (AutoDataset(train_texts=train_texts,
-                        train_texts_b=train_texts_b,
-                        train_labels=train_labels,
-                        eval_texts=eval_texts,
-                        eval_texts_b=eval_texts_b,
-                        eval_labels=eval_labels,
-                        task=task),
-            AutoDataset(train_texts=[],
-                        train_texts_b=None,
-                        train_labels=None,
-                        eval_texts=eval_texts,
-                        eval_texts_b=eval_texts_b,
-                        eval_labels=eval_labels,
-                        task=task).is_eval())
