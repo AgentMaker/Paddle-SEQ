@@ -148,11 +148,12 @@ class ClassesConfig(ModelConfig):
         optimizer = paddle.optimizer.AdamW(0.0001, parameters=self.network.parameters())
         metrics = paddle.metric.Accuracy()
         self.prepare_ops = [optimizer, loss_opt, metrics]
-
+        
     @staticmethod
     def get_result(out, decoder):
         out = paddle.to_tensor(out)
-        prob = paddle.nn.functional.softmax(out).numpy()
-        top_k = paddle.tensor.argsort(out).numpy()
+        prob = paddle.nn.functional.softmax(out)
+        prob = paddle.sort(prob, descending=True).numpy()
+        top_k = paddle.tensor.argsort(out, descending=True).numpy()
         return [(decoder(t), p) for p, t in zip(prob[0][0][:min(5, len(prob[0][0]))],
                                                 top_k[0][0][:min(5, len(prob[0][0]))])]
