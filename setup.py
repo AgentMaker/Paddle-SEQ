@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='PaddleSEQ',
-    version='0.10',
+    version='0.10-EAP-alpha',
     packages=['paddleseq', 'paddleseq.module', 'paddleseq.module.unit', 'paddleseq.dataset', 'paddleseq.seq_tools'],
     url='https://github.com/AgentMaker/PaddleSequence',
     license='MIT',
