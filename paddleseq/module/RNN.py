@@ -14,14 +14,6 @@ class LSTMModel(senta.LSTMModel):
         return super(LSTMModel, self).forward(text, None)
 
 
-class BiLSTMAttentionModel(senta.BiLSTMAttentionModel):
-    def __init__(self, vocab_size, num_classes, *args, **kwargs):
-        super(BiLSTMAttentionModel, self).__init__(vocab_size, num_classes, *args, **kwargs)
-
-    def forward(self, text, seq_len=None):
-        return super(BiLSTMAttentionModel, self).forward(text, None)
-
-
 class GRUModel(senta.GRUModel):
     def __init__(self, vocab_size, num_classes, *args, **kwargs):
         super(GRUModel, self).__init__(vocab_size, num_classes, *args, **kwargs)
@@ -46,24 +38,42 @@ class TextCNNModel(senta.TextCNNModel):
         return super(TextCNNModel, self).forward(text, None)
 
 
-class Senta(senta.Senta):
+class LSTMSenta(senta.Senta):
     def __init__(self, vocab_size, num_classes, *args, **kwargs):
-        super(Senta, self).__init__(vocab_size, num_classes, *args, **kwargs)
+        super().__init__("lstm", vocab_size, num_classes, *args, **kwargs)
 
     def forward(self, text, seq_len=None):
-        return super(Senta, self).forward(text, None)
+        return super().forward(text, None)
+
+
+class BiLSTMSenta(senta.Senta):
+    def __init__(self, vocab_size, num_classes, *args, **kwargs):
+        super().__init__("bilstm", vocab_size, num_classes, *args, **kwargs)
+
+    def forward(self, text, seq_len=None):
+        return super().forward(text, None)
+
+
+class BiGRUSenta(senta.Senta):
+    def __init__(self, vocab_size, num_classes, *args, **kwargs):
+        super().__init__("bigru", vocab_size, num_classes, *args, **kwargs)
+
+    def forward(self, text, seq_len=None):
+        return super().forward(text, None)
+
+
+class BiLSTMAttnSenta(senta.Senta):
+    def __init__(self, vocab_size, num_classes, *args, **kwargs):
+        super().__init__("bilstm_attn", vocab_size, num_classes, *args, **kwargs)
+
+    def forward(self, text, seq_len=None):
+        return super().forward(text, None)
 
 
 # config 传参顺序需要保持一致，原classes可能存在没有**kwargs的情况
 RNN_MODELS = {
     SEQNetwork.LSTM: {
         "network": LSTMModel,
-        "classes_convert": ClassesConvertRNN,
-        "classes_configs": {"vocab_size": 1256610,
-                            "num_classes": None}
-    },
-    SEQNetwork.BiLSTMAttention: {
-        "network": BiLSTMAttentionModel,
         "classes_convert": ClassesConvertRNN,
         "classes_configs": {"vocab_size": 1256610,
                             "num_classes": None}
@@ -86,9 +96,30 @@ RNN_MODELS = {
         "classes_configs": {"vocab_size": 1256610,
                             "num_classes": None}
     },
-    SEQNetwork.SENTA: {
-        "network": Senta,
+    SEQNetwork.LSTMSenta: {
+        "network": LSTMSenta,
         "classes_convert": ClassesConvertRNN,
         "classes_configs": {"vocab_size": 1256610,
                             "num_classes": None}
-    }}
+    },
+    SEQNetwork.BiLSTMSenta: {
+        "network": BiLSTMSenta,
+        "classes_convert": ClassesConvertRNN,
+        "classes_configs": {"vocab_size": 1256610,
+                            "num_classes": None}
+    },
+
+    SEQNetwork.BiGRUSenta: {
+        "network": BiGRUSenta,
+        "classes_convert": ClassesConvertRNN,
+        "classes_configs": {"vocab_size": 1256610,
+                            "num_classes": None}
+    },
+
+    SEQNetwork.BiLSTMAttnSenta: {
+        "network": BiLSTMAttnSenta,
+        "classes_convert": ClassesConvertRNN,
+        "classes_configs": {"vocab_size": 1256610,
+                            "num_classes": None}
+    }
+}
