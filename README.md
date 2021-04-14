@@ -38,7 +38,7 @@ print(out) -> "标签1"
 
 ### 尝鲜体验
 #### 代码部分
-```
+```python
 from paddleseq import AutoDataset, AutoModel, SEQDevice, SEQNetwork
 from paddlenlp.datasets.chnsenticorp import ChnSentiCorp
 
