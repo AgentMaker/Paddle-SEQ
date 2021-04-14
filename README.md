@@ -80,4 +80,4 @@ for i in range(5, 10):
 ```
 
 ## 项目许可
-本项目采用MIT开源协议为开源许可，使用时请标注项目来源PaddleSequence、组织AgentMaker、Owner GT-ZhangAcer
+本项目采用MIT开源协议为开源许可，使用时请标注项目来源PaddleSEQ/PaddleSequence & 组织AgentMaker & GT-ZhangAcer
