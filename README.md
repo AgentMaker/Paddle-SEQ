@@ -3,7 +3,7 @@
 超简单的序列数据处理框架，使用时只需输入数据和几行代码即可自动完成模型搭建、训练、预测等工作，可显著降低操作成本。  
 
 ## 项目依赖 - 在使用前需自行安装  
-> paddlepaddle >= 2.0.1  或 paddlepaddle-gpu >= 2.0.1
+> paddlepaddle >= 2.0.1  或 paddlepaddle-gpu >= 2.0.1  
 > paddlenlp  
 > wget  
 
