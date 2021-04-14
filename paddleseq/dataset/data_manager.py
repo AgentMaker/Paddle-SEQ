@@ -46,7 +46,7 @@ class BaseDataset(Dataset):
             return self.sample(index)
 
     def __len__(self):
-        return len(self.train_texts)
+        return len(self.train_texts) if self.eval_mode is False else len(self.eval_texts)
 
     def is_train(self):
         self.eval_mode = False
