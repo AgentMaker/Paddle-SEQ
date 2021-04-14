@@ -1,4 +1,4 @@
-# PaddleSequence(PaddleSEQ) - EAP
+# PaddleSEQ(PaddleSequence) - EAP
 
 超简单的序列数据处理框架，使用时只需输入数据和几行代码即可自动完成模型搭建、训练、预测等工作，可显著降低操作成本。  
 
