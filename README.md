@@ -10,16 +10,13 @@
 ### 支持模型以及任务
 
 #### 文本分类
-LSTM  
-LSTMSenta
-BiLSTMSenta  
-BiLSTMAttention  
-BiLSTMAttnSenta  
+LSTM
+BiLSTM 
+BiLSTMAttention
 GRU  
-BiGRUSenta  
+BiGRU 
 BOW  
 CNN
-BiLSTMAttnSenta
 ## 预览效果
 当前版本仍为EAP阶段，预计0.10-alpha版本在本月发布，发布时将提供whl包
 Warning：暂不支持模型一键保存，推理时可能需要预先读取训练数据，下次迭代将支持该部分
