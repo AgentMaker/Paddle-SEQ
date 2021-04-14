@@ -38,15 +38,7 @@ class TextCNNModel(senta.TextCNNModel):
         return super(TextCNNModel, self).forward(text, None)
 
 
-class LSTMSenta(senta.Senta):
-    def __init__(self, vocab_size, num_classes, *args, **kwargs):
-        super().__init__("lstm", vocab_size, num_classes, *args, **kwargs)
-
-    def forward(self, text, seq_len=None):
-        return super().forward(text, None)
-
-
-class BiLSTMSenta(senta.Senta):
+class BiLSTM(senta.Senta):
     def __init__(self, vocab_size, num_classes, *args, **kwargs):
         super().__init__("bilstm", vocab_size, num_classes, *args, **kwargs)
 
@@ -54,7 +46,7 @@ class BiLSTMSenta(senta.Senta):
         return super().forward(text, None)
 
 
-class BiGRUSenta(senta.Senta):
+class BiGRU(senta.Senta):
     def __init__(self, vocab_size, num_classes, *args, **kwargs):
         super().__init__("bigru", vocab_size, num_classes, *args, **kwargs)
 
@@ -62,7 +54,7 @@ class BiGRUSenta(senta.Senta):
         return super().forward(text, None)
 
 
-class BiLSTMAttnSenta(senta.Senta):
+class BiLSTMAttention(senta.Senta):
     def __init__(self, vocab_size, num_classes, *args, **kwargs):
         super().__init__("bilstm_attn", vocab_size, num_classes, *args, **kwargs)
 
@@ -78,8 +70,26 @@ RNN_MODELS = {
         "classes_configs": {"vocab_size": 1256610,
                             "num_classes": None}
     },
+    SEQNetwork.BiLSTM: {
+        "network": BiLSTM,
+        "classes_convert": ClassesConvertRNN,
+        "classes_configs": {"vocab_size": 1256610,
+                            "num_classes": None}
+    },
+    SEQNetwork.BiLSTMAttention: {
+        "network": BiLSTMAttention,
+        "classes_convert": ClassesConvertRNN,
+        "classes_configs": {"vocab_size": 1256610,
+                            "num_classes": None}
+    },
     SEQNetwork.GRU: {
         "network": GRUModel,
+        "classes_convert": ClassesConvertRNN,
+        "classes_configs": {"vocab_size": 1256610,
+                            "num_classes": None}
+    },
+    SEQNetwork.BiGRU: {
+        "network": BiGRU,
         "classes_convert": ClassesConvertRNN,
         "classes_configs": {"vocab_size": 1256610,
                             "num_classes": None}
@@ -92,32 +102,6 @@ RNN_MODELS = {
     },
     SEQNetwork.CNN: {
         "network": TextCNNModel,
-        "classes_convert": ClassesConvertRNN,
-        "classes_configs": {"vocab_size": 1256610,
-                            "num_classes": None}
-    },
-    SEQNetwork.LSTMSenta: {
-        "network": LSTMSenta,
-        "classes_convert": ClassesConvertRNN,
-        "classes_configs": {"vocab_size": 1256610,
-                            "num_classes": None}
-    },
-    SEQNetwork.BiLSTMSenta: {
-        "network": BiLSTMSenta,
-        "classes_convert": ClassesConvertRNN,
-        "classes_configs": {"vocab_size": 1256610,
-                            "num_classes": None}
-    },
-
-    SEQNetwork.BiGRUSenta: {
-        "network": BiGRUSenta,
-        "classes_convert": ClassesConvertRNN,
-        "classes_configs": {"vocab_size": 1256610,
-                            "num_classes": None}
-    },
-
-    SEQNetwork.BiLSTMAttnSenta: {
-        "network": BiLSTMAttnSenta,
         "classes_convert": ClassesConvertRNN,
         "classes_configs": {"vocab_size": 1256610,
                             "num_classes": None}

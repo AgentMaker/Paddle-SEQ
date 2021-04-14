@@ -29,7 +29,7 @@ dataset = AutoDataset(train_texts=train_texts,
                       eval_labels=dev_labels)
 
 # 此处可使用SEQDevice.CPU（CPU模式），切换GPU需要安装PaddlePaddle-GPU版本且需要更换为SEQDevice.GPU
-model = AutoModel(dataset, network=SEQNetwork.LSTMSenta, device=SEQDevice.CPU)
+model = AutoModel(dataset, network=SEQNetwork.BiLSTM, device=SEQDevice.CPU)
 model.run(batch_size=16, epochs=30, log_freq=100)
 out = model.infer("GT太菜了，水平真不行")
 print(out)
