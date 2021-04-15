@@ -10,11 +10,11 @@
 ### 支持模型以及任务
 
 #### 文本分类
-LSTM
-BiLSTM 
-BiLSTMAttention
-GRU  
-BiGRU 
+LSTM  
+BiLSTM   
+BiLSTMAttention  
+GRU   
+BiGRU  
 BOW  
 CNN
 ## 预览效果
@@ -60,15 +60,19 @@ def get_chnsenticorp_data(mode="train"):
 train_texts, train_labels = get_chnsenticorp_data()
 dev_texts, dev_labels = get_chnsenticorp_data("dev")
 
+# 调用AutoDataset
 dataset = AutoDataset(train_texts=train_texts,
                       train_labels=train_labels,
                       eval_texts=dev_texts,
                       eval_labels=dev_labels)
 
-# 此处可指定device=SEQDevice.GPU参数来设置GPU模式，默认为在PaddlePaddle-GPU版本后自动选择为GPU模式，其他情况为CPU执行
+# 准备模型 此处可指定device=SEQDevice.GPU参数来设置GPU模式，默认为在PaddlePaddle-GPU版本后自动选择为GPU模式，其他情况为CPU执行
 model = AutoModel(dataset, network=SEQNetwork.LSTM)
+
+# 开始训练
 model.run(batch_size=16, epochs=30)
 
+# 抽取5条数据进行预测
 for i in range(5, 10):
     t = dev_texts[i]
     out = model.infer(t)
